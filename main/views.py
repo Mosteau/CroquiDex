@@ -15,11 +15,10 @@ def EquipePokemon(request):
 def DetailPokemon(request, name):
     pokemonJson = get_pokemon_by_name(name)
     poke = Pokemon(pokemonJson)
-    poke.id
-    pokeBefore = get_pokemon_by_id(poke.id - 1 if poke.id > 0 else 0)
-    pokeAfter = get_pokemon_by_id((poke.id + 1)%151)
+    pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 0 else 0))
+    pokeAfter = Pokemon(get_pokemon_by_id((poke.id + 1)%151))
     
-    return render(request, 'detail.html', {'pokemon': pokemonJson, 'before': pokeBefore, 'after': pokeAfter})
+    return render(request, 'detail.html', {'pokemon': poke, 'before': pokeBefore, 'after': pokeAfter})
 
 def FightClubPokemon(request):
     return render(request, 'fightclub.html')
