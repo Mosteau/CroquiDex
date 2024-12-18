@@ -104,12 +104,28 @@ body {
     width: 100%;
 }
 
-.navv > a {
+.navv > div {
     flex: 1;
     background-color: #f1f3f5;
     padding: 10px;
-    text-decoration: none;
     color: #555 !important;
     border-radius: 4px;
-    text-align: center;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.navv > div:hover {
+    background-color: #e3e4e5;
+}
+
+.navv a {
+    text-decoration: none;
+    color: #555 !important;
+}
+
+.navv img {
+    width: 20px;
 }

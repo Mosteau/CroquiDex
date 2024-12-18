@@ -45,8 +45,15 @@
             </ul>
         </div>
         <div class="navv">
-            <a href="{% url 'detail' before.name %}">Previous</a>
-            <a href="{% url 'detail' after.name %}">Next</a>
+            <div>
+                <img src="{{ before.sprites.front_default }}" alt="">
+                <a href="{% url 'detail' before.name %}">Previous</a>
+            </div>
+            
+            <div>
+                <a href="{% url 'detail' after.name %}">Next</a>
+                <img src="{{ after.sprites.front_default }}" alt="">
+            </div>
         </div>
     </div>
 
