@@ -14,7 +14,7 @@ class Pokemon:
         self.weight = data.get("weight")
         self.height = data.get("height")
 
-        self.sprites = data.get("sprites", {}).get("front_default")
+        self.sprites = data.get("sprites", {})
 
     def __repr__(self):
         return (
