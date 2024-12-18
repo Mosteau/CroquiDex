@@ -38,9 +38,9 @@
             </ul>
 
             <h3>Types</h3>
-            <ul>
+            <ul class="type">
                 {% for type in pokemon.types %}
-                <li>{{ type|capfirst }}</li>
+                <li class="{{ type }}">{{ type|capfirst }}</li>
                 {% endfor %}
             </ul>
         </div>

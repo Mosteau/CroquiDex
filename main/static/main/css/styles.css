@@ -129,3 +129,76 @@ body {
 .navv img {
     width: 20px;
 }
+
+
+.type .normal {
+    background-color: #b5b490;
+}
+
+.type .fire {
+    background-color: #eaa068;
+}
+
+.type .water {
+    background-color: #82a0df;
+}
+
+.type .electric {
+    background-color: #ead892;
+}
+
+.type .grass {
+    background-color: #90bf75;
+}
+
+.type .ice {
+    background-color: #96d9d6;
+}
+
+.type .fighting {
+    background-color: #b67472;
+}
+
+.type .poison {
+    background-color: #a46ba3;
+}
+
+.type .ground {
+    background-color: #c1b083;
+}
+
+.type .flying {
+    background-color: #a291cf;
+}
+
+.type .psychic {
+    background-color: #e898c3;
+}
+
+.type .bug {
+    background-color: #9da65b;
+}
+
+.type .rock {
+    background-color: #ada67f;
+}
+
+.type .ghost {
+    background-color: #8b7d9d;
+}
+
+.type .steel {
+    background-color: #b7b8ce;
+}
+
+.type .dragon {
+    background-color: #8376a5;
+}
+
+.type .dark {
+    background-color: #847164;
+}
+
+.type .fairy {
+    background-color: #e6d0c9;
+}
