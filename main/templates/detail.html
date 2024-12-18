@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon Details</title>
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
 </head>
 <body>
     <div class="container">
@@ -37,6 +38,9 @@
                 {% endfor %}
             </ul>
 
+            <h3>Statistics</h3>
+            <div id="myChart"></div>
+
             <h3>Types</h3>
             <ul class="type">
                 {% for type in pokemon.types %}
@@ -62,6 +66,24 @@
             const audio = new Audio(cryUrl);
             audio.play();
         }
+
+        var myTheme = {
+            palette: {
+                fills: ['#333'],
+                strokes: ['gray'],
+            },}
+
+        const options = {
+            container: document.getElementById('myChart'),
+            data: {{ stats|safe }},
+            series: [{ type: 'bar', xKey: 'name', yKey: 'qte' }],
+            theme: myTheme
+        };
+
+        window.onload = function() {
+            const chart = agCharts.AgCharts.create(options);
+        };  
+
     </script>
 </body>
 </html>

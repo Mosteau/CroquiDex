@@ -17,8 +17,10 @@ def DetailPokemon(request, name):
     poke = Pokemon(pokemonJson)
     pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 0 else 0))
     pokeAfter = Pokemon(get_pokemon_by_id((poke.id + 1)%151))
+
+    statsList = [{'name': name.capitalize(), 'qte': qte} for name, qte in poke.stats.items()]
     
-    return render(request, 'detail.html', {'pokemon': poke, 'before': pokeBefore, 'after': pokeAfter})
+    return render(request, 'detail.html', {'pokemon': poke, 'before': pokeBefore, 'after': pokeAfter, 'stats': statsList})
 
 def FightClubPokemon(request):
     return render(request, 'fightclub.html')
