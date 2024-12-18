@@ -16,7 +16,7 @@ def DetailPokemon(request, name):
     pokemonJson = get_pokemon_by_name(name)
     poke = Pokemon(pokemonJson)
     poke.id
-    pokeBefore = get_pokemon_by_id(poke.id + 1 if poke.id > 0 else 0)
+    pokeBefore = get_pokemon_by_id(poke.id - 1 if poke.id > 0 else 0)
     pokeAfter = get_pokemon_by_id((poke.id + 1)%151)
     
     return render(request, 'detail.html', {'pokemon': pokemonJson, 'before': pokeBefore, 'after': pokeAfter})
