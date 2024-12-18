@@ -11,12 +11,14 @@
     <div class="container">
         <div class="header">
             <h1>{{ pokemon.name|capfirst }}</h1>
-            <img src="{{ pokemon.sprites.front_default }}" 
-                 alt="{{ pokemon.name }}" 
-                 class="pokemon-image" 
-                 onclick="playCry('{{ pokemon.cries.latest|safe }}')" 
-                 onmouseover="this.src='{{ pokemon.sprites.front_shiny }}'" 
-                 onmouseout="this.src='{{ pokemon.sprites.front_default }}'">
+            <div class="pokemon-image-container">
+                <img src="{{ pokemon.sprites.front_default }}" 
+                alt="{{ pokemon.name }}" 
+                class="pokemon-image" 
+                onclick="playCry('{{ pokemon.cries.latest|safe }}')" 
+                onmouseover="this.src='{{ pokemon.sprites.front_shiny }}'" 
+                onmouseout="this.src='{{ pokemon.sprites.front_default }}'">
+            </div>
         </div>
 
         <div class="details">
@@ -41,6 +43,10 @@
                 <li>{{ type.type.name|capfirst }}</li>
                 {% endfor %}
             </ul>
+        </div>
+        <div class="navv">
+            <a href="{% url 'detail' before.name %}">Previous</a>
+            <a href="{% url 'detail' after.name %}">Next</a>
         </div>
     </div>
 
