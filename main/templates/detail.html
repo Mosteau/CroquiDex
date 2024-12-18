@@ -1,11 +1,42 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Detail</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Details</title>
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/styles.css' %}">
 </head>
 <body>
-    <h1>Welcome to the Detail</h1>
+    <div class="container">
+        <div class="header">
+            <h1>{{ pokemon.name|capfirst }}</h1>
+            <img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon.name }}" class="pokemon-image">
+        </div>
+
+        <div class="details">
+            <h2>Details</h2>
+            <ul>
+                <li><strong>ID:</strong> {{ pokemon.id }}</li>
+                <li><strong>Height:</strong> {{ pokemon.height }} decimetres</li>
+                <li><strong>Weight:</strong> {{ pokemon.weight }} hectograms</li>
+                <li><strong>Base Experience:</strong> {{ pokemon.base_experience }}</li>
+            </ul>
+
+            <h3>Abilities</h3>
+            <ul>
+                {% for ability in pokemon.abilities %}
+                <li>{{ ability.ability.name|capfirst }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Types</h3>
+            <ul>
+                {% for type in pokemon.types %}
+                <li>{{ type.type.name|capfirst }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
