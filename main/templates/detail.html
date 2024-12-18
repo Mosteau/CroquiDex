@@ -33,25 +33,25 @@
             <h3>Abilities</h3>
             <ul>
                 {% for ability in pokemon.abilities %}
-                <li>{{ ability.ability.name|capfirst }}</li>
+                <li>{{ ability|capfirst }}</li>
                 {% endfor %}
             </ul>
 
             <h3>Types</h3>
             <ul>
                 {% for type in pokemon.types %}
-                <li>{{ type.type.name|capfirst }}</li>
+                <li>{{ type|capfirst }}</li>
                 {% endfor %}
             </ul>
         </div>
         <div class="navv">
             <div>
                 <img src="{{ before.sprites.front_default }}" alt="">
-                <a href="{% url 'detail' before.name %}">Previous</a>
+                <a href="{% url 'detail' before.name %}">{{ before.name|capfirst }}</a>
             </div>
             
             <div>
-                <a href="{% url 'detail' after.name %}">Next</a>
+                <a href="{% url 'detail' after.name %}">{{ after.name|capfirst }}</a>
                 <img src="{{ after.sprites.front_default }}" alt="">
             </div>
         </div>
