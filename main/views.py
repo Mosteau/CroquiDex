@@ -1,8 +1,12 @@
 from django.shortcuts import render
+from .pokeapi import get_pokemon_by_id
 
 # Create your views here.
 def HomeListPokemon(request):
-    return render(request, 'home.html')
+    
+    test = get_pokemon_by_id(25)
+    
+    return render(request, 'home.html', {'pokemon': str(test)})
 
 def EquipePokemon(request):
     return render(request, 'equipe.html')
