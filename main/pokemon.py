@@ -11,8 +11,8 @@ class Pokemon:
 
         self.base_experience = data.get("base_experience")
 
-        self.weight = data.get("weight")
-        self.height = data.get("height")
+        self.weight = str(int(data.get("weight"))*0.1)+" kg" if data.get("weight") > 1 else str(int(data.get("weight"))*100)+" g"
+        self.height = str(int(data.get("height"))*10)+" cm"
 
         self.sprites = data.get("sprites", {})
 
