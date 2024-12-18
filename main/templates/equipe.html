@@ -1,11 +1,79 @@
 {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Equipe</title>
+    <meta charset="UTF-8">
+    <title>Équipe Pokémon</title>
     <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
 </head>
 <body>
-    <h1>Welcome to the Equipe</h1>
-</body>
+    <h1>Sélectionnez vos Pokémon</h1>
+    <div class="pokemon-container">
+        <div class="pokemon-list">
+            {% for pokemon in pokemons %}
+                <div class="pokemon-card" data-id="{{ pokemon.id }}" data-name="{{ pokemon.name }}" data-image="{{ pokemon.image }}">
+                    <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}">
+                    <p>{{ pokemon.name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="team-section">
+        <h2>Mon Équipe (5 Pokémon max)</h2>
+        <div class="selected-team"></div>
+    </div>
+    
+    <script>
+        let selectedTeam = [];
+        const maxTeamSize = 5;
+    
+        document.querySelectorAll('.pokemon-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const pokemon = {
+                    id: this.dataset.id,
+                    name: this.dataset.name,
+                    image: this.dataset.image
+                };
+    
+                const index = selectedTeam.findIndex(p => p.id === pokemon.id);
+                
+                if (index === -1 && selectedTeam.length < maxTeamSize) {
+                    selectedTeam.push(pokemon);
+                } else if (index !== -1) {
+                    selectedTeam.splice(index, 1);
+                }
+    
+                updateTeamDisplay();
+            });
+        });
+    
+        function updateTeamDisplay() {
+            const teamContainer = document.querySelector('.selected-team');
+            teamContainer.innerHTML = '';
+    
+            if (selectedTeam.length === 0) {
+                teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
+                return;
+            }
+    
+            selectedTeam.forEach(pokemon => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card team-member';
+                card.innerHTML = `
+                    <img src="${pokemon.image}" alt="${pokemon.name}">
+                    <p>${pokemon.name}</p>
+                    <button onclick="removePokemon('${pokemon.id}')">Retirer</button>
+                `;
+                teamContainer.appendChild(card);
+            });
+        }
+    
+        function removePokemon(id) {
+            selectedTeam = selectedTeam.filter(pokemon => pokemon.id !== id);
+            updateTeamDisplay();
+        }
+    </script>
+    
 </html>
