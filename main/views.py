@@ -15,7 +15,7 @@ def EquipePokemon(request):
 def DetailPokemon(request, name):
     pokemonJson = get_pokemon_by_name(name)
     poke = Pokemon(pokemonJson)
-    pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 0 else 0))
+    pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 1 else 1))
     pokeAfter = Pokemon(get_pokemon_by_id((poke.id + 1)%151))
 
     statsList = [{'name': name.capitalize(), 'qte': qte} for name, qte in poke.stats.items()]
