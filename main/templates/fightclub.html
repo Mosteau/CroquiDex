@@ -1,11 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Fightclub</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
-</head>
-<body>
-    <h1>Welcome to the Fightclub</h1>
-</body>
-</html>
+
+{% block title %}Fight Club - CroquiDex{% endblock %}
+
+{% block content %}
+    <div class="fightclub-container">
+        <h1>Bienvenue au Fight Club</h1>
+    </div>
+{% endblock %}

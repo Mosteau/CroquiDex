@@ -1,12 +1,13 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
-</head>
-<body>
-    <h1>Welcome to the Home Page</h1>
-    {{ pokemon }}
-</body>
-</html>
+
+{% block title %}Accueil - CroquiDex{% endblock %}
+
+{% block content %}
+    <div class="home-container">
+        <h1>Bienvenue sur CroquiDex</h1>
+        <div class="pokemon-info">
+            {{ pokemon }}
+        </div>
+    </div>
+{% endblock %}

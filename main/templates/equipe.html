@@ -1,13 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Équipe Pokémon</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
-</head>
-<body>
+
+{% block title %}Équipe Pokémon{% endblock %}
+
+{% block content %}
     <h1>Sélectionnez vos Pokémon</h1>
     <div class="pokemon-container">
         <div class="pokemon-list">
@@ -75,5 +71,4 @@
             updateTeamDisplay();
         }
     </script>
-    
-</html>
+    {% endblock %}
