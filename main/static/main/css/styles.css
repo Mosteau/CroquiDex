@@ -8,6 +8,14 @@
 body {
     background-color: #f8f9fa;
     font-family: 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+main {
+    width: 100%;
+    flex: 1;
 }
 
 header, footer {
@@ -265,4 +273,37 @@ footer {
 
 .details > div {
     min-width: 300px;
+}
+
+
+/* ================================= */
+
+
+.container404 {
+    max-width: 500px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container404 h1 {
+    font-size: 6rem;
+    color: #ff6347;
+    width: fit-content;;
+}
+
+.container404 .pokemon-img {
+    width: 200px;
+    margin: 20px 0;
+}
+
+.container404 p {
+    font-size: 1.2rem;
+    margin: 10px 0;
 }
