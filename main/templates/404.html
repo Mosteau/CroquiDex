@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container404">
+        <h1>404</h1>
+        <p>Oh no! A wild error appeared!</p>
+        <img src="https://media1.tenor.com/m/szFJZKSZrswAAAAd/pikachu-sad.gif" alt="Sad Pikachu" class="pokemon-img">
+        <p>The page you are looking for doesn't exist.</p>
+    </div>
+    <script>
+        var links = [
+            "https://media1.tenor.com/m/szFJZKSZrswAAAAd/pikachu-sad.gif",
+            "https://media1.tenor.com/m/FG_XBA68iW4AAAAd/pikachu-potchama.gif",
+            "https://media1.tenor.com/m/5B_aZRe5cQkAAAAd/tired-pikachu.gif",
+            "https://media1.tenor.com/m/IROVWMXl1RIAAAAd/pikachu.gif",
+        ];
+        var randomIndex = Math.floor(Math.random() * links.length);
+        var img = document.querySelector('.pokemon-img');
+        img.src = links[randomIndex];
+    </script>
+{% endblock %}

@@ -1,11 +1,86 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detail</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main/styles.css' %}">
-</head>
-<body>
-    <h1>Welcome to the Detail</h1>
-</body>
-</html>
+
+{% block content %}
+<div class="detail-page">
+<div class="container">
+    <div class="header">
+        <h1>{{ pokemon.name|capfirst }}</h1>
+        <div class="pokemon-image-container">
+            <img src="{{ pokemon.sprites.front_default }}" 
+            alt="{{ pokemon.name }}" 
+            class="pokemon-image" 
+            onclick="playCry('{{ pokemon.cries.latest|safe }}')" 
+            onmouseover="this.src='{{ pokemon.sprites.front_shiny }}'" 
+            onmouseout="this.src='{{ pokemon.sprites.front_default }}'">
+        </div>
+    </div>
+
+    <div class="details">
+        <div>
+            <h2>Details</h2>
+            <ul>
+                <li><strong>ID:</strong> {{ pokemon.id }}</li>
+                <li><strong>Height:</strong> {{ pokemon.height }}</li>
+                <li><strong>Weight:</strong> {{ pokemon.weight }}</li>
+                <li><strong>Base Experience:</strong> {{ pokemon.base_experience }}</li>
+            </ul>
+
+            <h3>Abilities</h3>
+            <ul>
+                {% for ability in pokemon.abilities %}
+                <li>{{ ability|capfirst }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>Statistics</h3>
+            <div id="myChart"></div>
+
+            <h3>Types</h3>
+            <ul class="type">
+                {% for type in pokemon.types %}
+                <li class="{{ type }}">{{ type|capfirst }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="navv">
+        <div>
+            <img src="{{ before.sprites.front_default }}" alt="">
+            <a href="{% url 'detail' before.name %}">{{ before.name|capfirst }}</a>
+        </div>
+        
+        <div>
+            <a href="{% url 'detail' after.name %}">{{ after.name|capfirst }}</a>
+            <img src="{{ after.sprites.front_default }}" alt="">
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    function playCry(cryUrl) {
+        const audio = new Audio(cryUrl);
+        audio.play();
+    }
+
+    var myTheme = {
+        palette: {
+            fills: ['#333'],
+            strokes: ['gray'],
+        },}
+
+    const options = {
+        container: document.getElementById('myChart'),
+        data: {{ stats|safe }},
+        series: [{ type: 'bar', xKey: 'name', yKey: 'qte' }],
+        theme: myTheme
+    };
+
+    window.onload = function() {
+        const chart = agCharts.AgCharts.create(options);
+    };  
+
+</script>
+{% endblock %}
