@@ -13,6 +13,7 @@ Ce projet de cours a pour but d'explorer le framework Django à travers le déve
 
 - **HTML** : Utilisé pour structurer le contenu de nos pages web.
 - **Python (Django)** : Django servira de framework back-end pour gérer les interactions entre l'utilisateur, le serveur, et la base de données.
+- **JavaScript : pour la manipulation du dom.
 
 ## Équipe
 
