@@ -23,30 +23,33 @@
         </div>
 
         <div class="details">
-            <h2>Details</h2>
-            <ul>
-                <li><strong>ID:</strong> {{ pokemon.id }}</li>
-                <li><strong>Height:</strong> {{ pokemon.height }}</li>
-                <li><strong>Weight:</strong> {{ pokemon.weight }}</li>
-                <li><strong>Base Experience:</strong> {{ pokemon.base_experience }}</li>
-            </ul>
+            <div>
+                <h2>Details</h2>
+                <ul>
+                    <li><strong>ID:</strong> {{ pokemon.id }}</li>
+                    <li><strong>Height:</strong> {{ pokemon.height }}</li>
+                    <li><strong>Weight:</strong> {{ pokemon.weight }}</li>
+                    <li><strong>Base Experience:</strong> {{ pokemon.base_experience }}</li>
+                </ul>
 
-            <h3>Abilities</h3>
-            <ul>
-                {% for ability in pokemon.abilities %}
-                <li>{{ ability|capfirst }}</li>
-                {% endfor %}
-            </ul>
-
-            <h3>Statistics</h3>
-            <div id="myChart"></div>
-
-            <h3>Types</h3>
-            <ul class="type">
-                {% for type in pokemon.types %}
-                <li class="{{ type }}">{{ type|capfirst }}</li>
-                {% endfor %}
-            </ul>
+                <h3>Abilities</h3>
+                <ul>
+                    {% for ability in pokemon.abilities %}
+                    <li>{{ ability|capfirst }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <h3>Statistics</h3>
+                <div id="myChart"></div>
+    
+                <h3>Types</h3>
+                <ul class="type">
+                    {% for type in pokemon.types %}
+                    <li class="{{ type }}">{{ type|capfirst }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="navv">
             <div>

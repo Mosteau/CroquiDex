@@ -38,8 +38,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 400px;
-    width: 100%;
+    width: fit-content;
 }
 
 .header {
@@ -70,6 +69,7 @@ body {
 
 .details {
     margin-top: 20px;
+    width: fit-content;
 }
 
 .details h2 {
@@ -201,4 +201,22 @@ body {
 
 .type .fairy {
     background-color: #e6d0c9;
+}
+
+
+.details {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px
+}
+
+@media (min-width: 700px) {
+    .details {
+        flex-direction: row;
+    }
+}
+
+.details > div {
+    min-width: 300px;
 }
