@@ -14,6 +14,10 @@ def EquipePokemon(request):
 
 def DetailPokemon(request, name):
     pokemonJson = get_pokemon_by_name(name)
+    
+    if pokemonJson is None or pokemonJson["id"] > 151:
+        return render(request, '404.html')
+    
     poke = Pokemon(pokemonJson)
     pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 1 else 1))
     pokeAfter = Pokemon(get_pokemon_by_id((poke.id + 1)%151))
