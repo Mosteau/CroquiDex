@@ -22,6 +22,6 @@ from . import views
 urlpatterns = [
     path('', views.HomeListPokemon, name='home'),
     path('equipe/', views.EquipePokemon, name='equipe'),
-    path('detail/', views.DetailPokemon, name='detail'),
+    path('detail/<name>', views.DetailPokemon, name='detail'),
     path('fightclub/', views.FightClubPokemon, name='fightclub'),
 ]
