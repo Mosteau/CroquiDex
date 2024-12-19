@@ -96,6 +96,7 @@ footer {
 
 .header {
     text-align: center;
+    margin: 20px 0;
 }
 
 .header h1 {
@@ -306,4 +307,115 @@ footer {
 .container404 p {
     font-size: 1.2rem;
     margin: 10px 0;
+}
+
+.pokemon-container {
+    flex: 1;
+    margin-right: 270px;
+    width: calc(100% - 270px);
+}
+
+.pokemon-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+
+.pokemon-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.pokemon-card img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+}
+
+.pokemon-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.team-section {
+    width: 250px;
+    position: fixed;
+    right: 0;
+    top: 100px;
+    height: 100vh;
+    background: #f5f5f5;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.selected-team {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.team-member {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-member img {
+    width: 60px;
+    height: 60px;
+}
+
+button {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #cc0000;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.home-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pokemon-info {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.fightclub-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
