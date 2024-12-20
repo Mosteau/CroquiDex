@@ -7,7 +7,16 @@
     <div class="home-container">
         <h1>Bienvenue sur CroquiDex</h1>
         <div class="pokemon-info">
-            {{ pokemon }}
+            <ul>
+            {% for pokemon in all %}
+                <li>
+                    <img src="{{ pokemon.1 }}" alt="{{ pokemon.0. }}">
+                    <a href="{% url 'detail' pokemon.0 %}">
+                        {{ pokemon.0 }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}
