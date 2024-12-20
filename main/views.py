@@ -15,7 +15,6 @@ from .pokeapi import get_pokemon_by_id
 # Create your views here.
 def HomeListPokemon(request):
     all = get_all_pokemon()
-    
     return render(request, 'home.html', {'all': all,})
 
 def EquipePokemon(request):

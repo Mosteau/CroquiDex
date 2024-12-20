@@ -38,7 +38,7 @@ def get_all_pokemon():
   if response.status_code == 200:
     for i, pokemon in enumerate(response.json()["results"]):
       pokemon_with_imgs.append([pokemon["name"], f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{i+1}.png"])
-    
+    print(response.json()["results"])
     return pokemon_with_imgs
   else:
     return None
