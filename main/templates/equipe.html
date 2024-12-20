@@ -4,11 +4,14 @@
 {% block title %}Équipe Pokémon{% endblock %}
 
 {% block content %}
-    <h1>Sélectionnez vos Pokémon</h1>
+    <h1 class="title-team">Sélectionnez vos Pokémon</h1>
     <div class="pokemon-container">
         <div class="pokemon-list">
-            {% for pokemon in pokemons %}
-                <div class="pokemon-card" data-id="{{ pokemon.id }}" data-name="{{ pokemon.name }}" data-image="{{ pokemon.image }}">
+            {% for pokemon in all %}
+                <div class="pokemon-card" 
+                     data-id="{{ pokemon.id }}" 
+                     data-name="{{ pokemon.name }}" 
+                     data-image="{{ pokemon.image }}">
                     <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}">
                     <p>{{ pokemon.name }}</p>
                 </div>
@@ -19,8 +22,7 @@
     <div class="team-section">
         <h2>Mon Équipe (5 Pokémon max)</h2>
         <div class="selected-team"></div>
-    </div>
-    
+    </div>    
     <script>
         let selectedTeam = [];
         const maxTeamSize = 5;
