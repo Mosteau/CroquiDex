@@ -22,8 +22,20 @@
     <div class="team-section">
         <h2>Mon Équipe (5 Pokémon max)</h2>
         <div class="selected-team"></div>
+        <button class="fight-button" id="fight-button" onclick="Gotofight()" style="display: none;">Combattre</button>
     </div>    
     <script>
+
+    
+    function Gotofight(){
+        if (document.querySelector('.selected-team').innerHTML === '<p>Aucun Pokémon sélectionné</p>'){
+            alert('Veuillez sélectionner au moins un Pokémon pour combattre');
+        } else {
+            window.location.href = "{% url 'fightclub' %}";
+        }
+    }
+
+
         let selectedTeam = [];
         const maxTeamSize = 5;
     
@@ -34,39 +46,38 @@
                     name: this.dataset.name,
                     image: this.dataset.image
                 };
-    
                 const index = selectedTeam.findIndex(p => p.id === pokemon.id);
-                
                 if (index === -1 && selectedTeam.length < maxTeamSize) {
                     selectedTeam.push(pokemon);
                 } else if (index !== -1) {
                     selectedTeam.splice(index, 1);
                 }
-    
                 updateTeamDisplay();
             });
         });
     
         function updateTeamDisplay() {
-            const teamContainer = document.querySelector('.selected-team');
-            teamContainer.innerHTML = '';
-    
-            if (selectedTeam.length === 0) {
-                teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
-                return;
-            }
-    
-            selectedTeam.forEach(pokemon => {
-                const card = document.createElement('div');
-                card.className = 'pokemon-card team-member';
-                card.innerHTML = `
-                    <img src="${pokemon.image}" alt="${pokemon.name}">
-                    <p>${pokemon.name}</p>
-                    <button onclick="removePokemon('${pokemon.id}')">Retirer</button>
-                `;
-                teamContainer.appendChild(card);
-            });
+        const teamContainer = document.querySelector('.selected-team');
+        const fightButton = document.getElementById('fight-button');
+        teamContainer.innerHTML = '';
+        if (selectedTeam.length === 0) {
+            teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
+            fightButton.style.display = 'none';
+            return;
         }
+
+        selectedTeam.forEach(pokemon => {
+            const card = document.createElement('div');
+            card.className = 'pokemon-card team-member';
+            card.innerHTML = `
+                <img src="${pokemon.image}" alt="${pokemon.name}">
+                <p>${pokemon.name}</p>
+                <button onclick="removePokemon('${pokemon.id}')">Retirer</button>
+            `;
+            teamContainer.appendChild(card);
+        });
+        fightButton.style.display = 'block';
+    }
     
         function removePokemon(id) {
             selectedTeam = selectedTeam.filter(pokemon => pokemon.id !== id);
