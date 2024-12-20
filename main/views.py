@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .pokeapi import get_pokemon_by_id, get_pokemon_by_name
+from .pokeapi import get_pokemon_by_id, get_pokemon_by_name, get_all_pokemon
 from .pokemon import Pokemon
 
 # Create your views here.
@@ -14,10 +14,9 @@ from .pokeapi import get_pokemon_by_id
 
 # Create your views here.
 def HomeListPokemon(request):
+    all = get_all_pokemon()
     
-    test = get_pokemon_by_id(25)
-    
-    return render(request, 'home.html', {'pokemon': str(test)})
+    return render(request, 'home.html', {'all': all,})
 
 def EquipePokemon(request):
     # Récupérer les 151 premiers Pokémon
@@ -41,7 +40,7 @@ def DetailPokemon(request, name):
     
     poke = Pokemon(pokemonJson)
     pokeBefore = Pokemon(get_pokemon_by_id(poke.id - 1 if poke.id > 1 else 1))
-    pokeAfter = Pokemon(get_pokemon_by_id((poke.id + 1)%151))
+    pokeAfter = Pokemon(get_pokemon_by_id((poke.id)%151 + 1))
 
     statsList = [{'name': name.capitalize(), 'qte': qte} for name, qte in poke.stats.items()]
     

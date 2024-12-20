@@ -29,3 +29,16 @@ def get_pokemon_type(type_id):
     return response.json()
   else:
     return None
+
+def get_all_pokemon():
+  response = requests.get(f"{BASE_URL}pokemon?limit=151")
+  
+  pokemon_with_imgs = []
+  
+  if response.status_code == 200:
+    for i, pokemon in enumerate(response.json()["results"]):
+      pokemon_with_imgs.append([pokemon["name"], f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{i+1}.png"])
+    
+    return pokemon_with_imgs
+  else:
+    return None
