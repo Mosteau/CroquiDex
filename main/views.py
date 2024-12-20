@@ -1,40 +1,23 @@
 from django.shortcuts import render
-from .pokeapi import get_pokemon_by_id, get_pokemon_by_name, get_all_pokemon
+from .pokeapi import get_pokemon_by_id, get_pokemon_by_name, get_all_pokemon, get_all_pokemon_for_teams
 from .pokemon import Pokemon
-
-# Create your views here.
-def HomeListPokemon(request):
-    
-    test = get_pokemon_by_id(25)
-    
-    return render(request, 'home.html', {'pokemon': str(test)})
-
 from django.shortcuts import render
 from .pokeapi import get_pokemon_by_id
 
-# Create your views here.
+# gérer l'affichage de la liste des pokemons sur la page accueil
 def HomeListPokemon(request):
     all = get_all_pokemon()
-    
     return render(request, 'home.html', {'all': all,})
 
+# gérer l'affichage des pokemons pour la gestion de l'équipe
 def EquipePokemon(request):
-    # Récupérer les 151 premiers Pokémon
-    pokemons = []
-    for pokemon_id in range(1, 151):
-        pokemon = get_pokemon_by_id(pokemon_id)
-        if pokemon:
-            pokemons.append({
-                'id': pokemon['id'],
-                'name': pokemon['name'].capitalize(),
-                'image': pokemon['sprites']['front_default']
-            })
-    
-    return render(request, 'equipe.html', {'pokemons': pokemons})
+    all = get_all_pokemon_for_teams()
+    return render(request, 'equipe.html', {'all': all,})
 
+
+# gérer l'affichage des détails d'un pokemon
 def DetailPokemon(request, name):
     pokemonJson = get_pokemon_by_name(name)
-    
     if pokemonJson is None or pokemonJson["id"] > 151:
         return render(request, '404.html')
     
@@ -46,6 +29,7 @@ def DetailPokemon(request, name):
     
     return render(request, 'detail.html', {'pokemon': poke, 'before': pokeBefore, 'after': pokeAfter, 'stats': statsList})
 
+# gérer l'affichage des pokemons de la page de combat
 def FightClubPokemon(request):
     return render(request, 'fightclub.html')
 

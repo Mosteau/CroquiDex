@@ -277,7 +277,7 @@ footer {
 }
 
 
-/* ================================= */
+/* Page 404 */
 
 
 .container404 {
@@ -307,6 +307,14 @@ footer {
 .container404 p {
     font-size: 1.2rem;
     margin: 10px 0;
+}
+
+/* Liste pokemons page Equipe */
+
+.title-team {
+position: center;
+    text-align: center;
+    margin: 20px 0;
 }
 
 .pokemon-container {
@@ -349,17 +357,20 @@ footer {
     font-size: 14px;
 }
 
+/* gestion de la barre de sélection pokemons */
 .team-section {
     width: 250px;
     position: fixed;
-    right: 0;
-    top: 100px;
-    height: 100vh;
-    background: #f5f5f5;
+    right: 10px;
+    top: 15%;
+    height: 70vh;
+    background: #ffaf71;
     padding: 20px;
     border-left: 1px solid #ddd;
     overflow-y: auto;
+    box-shadow: -8px 0 15px rgba(0, 0, 0, 0.1);
     z-index: 1;
+    border-radius: 10px;
 }
 
 .selected-team {
@@ -370,29 +381,40 @@ footer {
 
 .team-member {
     background: #fff;
-    padding: 10px;
     border-radius: 8px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
+    width: 100%;
 }
 
 .team-member img {
     width: 60px;
     height: 60px;
+    object-fit: contain;
 }
 
-button {
-    background: #ff4444;
+.team-member p {
+    margin: 5px 0;
+    font-size: 14px;
+    text-align: center;
+    word-wrap: break-word;
+    width: 100%;
+}
+
+.team-member button {
+    background: #252525;
     color: white;
     border: none;
-    padding: 5px 10px;
     border-radius: 4px;
+    padding: 5px 10px;
     cursor: pointer;
+    width: 80%;
+    margin-top: 5px;
 }
 
-button:hover {
-    background: #cc0000;
+.team-member button:hover {
+    background: #404040;
 }
 
 h1, h2 {
@@ -413,6 +435,8 @@ h1, h2 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-top: 20px;
 }
+
+/* Page fightclub */
 
 .fightclub-container {
     padding: 20px;
