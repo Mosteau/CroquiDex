@@ -16,10 +16,14 @@ class Pokemon:
 
         self.sprites = data.get("sprites", {})
 
+        self.cries = data.get("cries", {})
+
     def __repr__(self):
         return (
             f"Pokemon(id={self.id}, name='{self.name}', types={self.types}, "
             f"abilities={self.abilities}, stats={self.stats}, "
             f"base_experience={self.base_experience}, "
-            f"weight={self.weight}, height={self.height})"
+            f"weight={self.weight}, height={self.height}"
+            f"sprites={list(self.sprites.keys())}"
+            f"cries={list(self.cries.keys())})"
         )
