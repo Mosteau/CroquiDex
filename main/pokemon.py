@@ -27,3 +27,11 @@ class Pokemon:
             f"sprites={list(self.sprites.keys())}"
             f"cries={list(self.cries.keys())})"
         )
+    
+    def presentation(self):
+        return (
+            f"{self.name.capitalize()} is a pokemon of types {self.types}.\n"
+            f"They have the following abilities: {self.abilities}.\n"
+            f"Their stats are: {self.stats}.\n"
+            f"They weight {self.weight} for a height of {self.height}."
+        )
