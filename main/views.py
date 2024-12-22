@@ -4,6 +4,10 @@ from .pokemon import Pokemon
 from django.shortcuts import render
 from .pokeapi import get_pokemon_by_id
 from random import randint
+import json
+from openai import OpenAI
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # gérer l'affichage de la liste des pokemons sur la page accueil
 def HomeListPokemon(request):
@@ -61,3 +65,41 @@ At the end, when one of the teams wins, you will tell the user that they won. Yo
     
     return render(request, 'aiduel.html', {'system_prompt': system_prompt, 'user_prompt': user_prompt, 'user_team': user_team, 'ai_team': ai_team})
 
+@csrf_exempt
+def ChatAPi(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            model = data.get("model")
+            base_url = data.get("baseUrl")
+            api_key = data.get("apiKey")
+            system_prompt = data.get("systemPrompt")
+            user_prompt = data.get("userPrompt")
+            
+            if api_key is None or len(api_key) == 0 or api_key == "":
+                api_key = "API KEYS ARE JUST SOCIAL CONSTUCTS"          
+
+            if not all([model, base_url, api_key, system_prompt, user_prompt]):
+                return JsonResponse({"error": "Missing required fields"}, status=400)
+            
+            client = OpenAI(
+                base_url=base_url,
+                api_key=api_key,
+            )
+
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
+
+            return JsonResponse({"message": response.choices[0].message.content}, status=200, safe=False)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Only POST method is allowed"}, status=405)
