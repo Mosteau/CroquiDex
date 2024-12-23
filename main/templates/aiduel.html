@@ -17,6 +17,14 @@
         <button id="saveSettings">Close</button>
     </form>
 </dialog>
+
+<dialog id="battleDialog">
+    <form method="dialog" class="settings-form">
+        <p class="battle"></p>
+        <button id="saveSettings">Close</button>
+    </form>
+</dialog>
+
 <div class="pokemon-arena">
     <h1>The AI's team !</h1>
     <div class="pokemon-team">
@@ -44,23 +52,29 @@
 
     <script>
         document.getElementById('fight-button').addEventListener('click', function() {
-        fetch('/api/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                systemPrompt: `{{ system_prompt|safe }}`,
-                userPrompt: `{{ user_prompt|safe }}`,
-                baseUrl: document.getElementById('ai-api-url').value,
-                apiKey: document.getElementById('ai-api-key').value,
-                model: document.getElementById('ai-model').value
+        if (document.getElementById('ai-api-url').value == '' || document.getElementById('ai-api-key').value == '' || document.getElementById('ai-model').value == '') {
+            alert('Please fill all the fields (API URL, API Key, Model)');
+            document.getElementById('settingsDialog').showModal();
+        }
+        else {fetch('/api/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    systemPrompt: `{{ system_prompt|safe }}`,
+                    userPrompt: `{{ user_prompt|safe }}`,
+                    baseUrl: document.getElementById('ai-api-url').value,
+                    apiKey: document.getElementById('ai-api-key').value,
+                    model: document.getElementById('ai-model').value
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.battle').innerHTML = data["message"]
+                document.getElementById('battleDialog').showModal();
+            })
+            .catch(error => console.error('Error:', error));}
         });
     </script>
 <script>
