@@ -4,7 +4,7 @@ from .pokemon import Pokemon
 from django.shortcuts import render
 from .pokeapi import get_pokemon_by_id
 from random import randint
-import json
+import json, re
 from openai import OpenAI
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -67,6 +67,15 @@ At the end, when one of the teams wins, you will tell the user that they won. Yo
 
 @csrf_exempt
 def ChatAPi(request):
+    def battle_text_to_html(text):
+        # Remplace **text** par <strong>text</strong> et *text* par <i>text</i>
+        html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
+        html = re.sub(r'\*(.*?)\*', r'<i>\1</i>', text)
+        
+        # Remplace \n par <br>
+        html = html.replace('\n', '<br>')
+        return html
+    
     if request.method == "POST":
         try:
             data = json.loads(request.body.decode("utf-8"))
@@ -95,7 +104,7 @@ def ChatAPi(request):
                 ],
             )
 
-            return JsonResponse({"message": response.choices[0].message.content}, status=200, safe=False)
+            return JsonResponse({"message": battle_text_to_html(response.choices[0].message.content)}, status=200, safe=False)
         
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
