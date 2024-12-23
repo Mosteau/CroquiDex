@@ -55,7 +55,9 @@ def AIDuel(request):
 
 The battle must be **epic** with **lots of details and plot twists**. The battle must be **realistic** (take in account the stats of the pokemon and their types).
 
-At the end, when one of the teams wins, you will tell the user that they won. Your answer must always end with either "USER" or "AI".
+At the end, when one of the teams wins, you will tell the user that they won.
+
+You may use **text** or *text* for abilities, moves, types, Titles to make it easier to read for the user
 """
     
     user_prompt = f"""# Here is the **user's team**:
@@ -70,7 +72,7 @@ def ChatAPi(request):
     def battle_text_to_html(text):
         # Remplace **text** par <strong>text</strong> et *text* par <i>text</i>
         html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
-        html = re.sub(r'\*(.*?)\*', r'<i>\1</i>', text)
+        html = re.sub(r'\*(.*?)\*', r'<i>\1</i>', html)
         
         # Remplace \n par <br>
         html = html.replace('\n', '<br>')
