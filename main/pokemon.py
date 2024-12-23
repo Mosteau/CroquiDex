@@ -1,5 +1,11 @@
 class Pokemon:
     def __init__(self, data):
+        """
+        Initialisation d'un Pokemon
+
+        Args:
+            data (dict): Les données du Pokemon provenant de la PokeAPI
+        """
         self.id = data.get("id")
         self.name = data.get("name")
 
@@ -7,18 +13,34 @@ class Pokemon:
 
         self.abilities = [a["ability"]["name"] for a in data.get("abilities", [])]
 
-        self.stats = {stat["stat"]["name"]: stat["base_stat"] for stat in data.get("stats", [])}
+        self.stats = {
+            stat["stat"]["name"]: stat["base_stat"] for stat in data.get("stats", [])
+        }
 
         self.base_experience = data.get("base_experience")
 
-        self.weight = str(int(data.get("weight"))*0.1)+" kg" if data.get("weight") > 1 else str(int(data.get("weight"))*100)+" g"
-        self.height = str(int(data.get("height"))*10)+" cm"
+        # La formule pour calculer le poids est la suivante :
+        # si le poids est supérieur à1 (en kg), on le multiplie par 0,1 (soit 100g) et on l'affiche en kg
+        # sinon, on le multiplie par 100 et on l'affiche en grammes
+        self.weight = (
+            str(int(data.get("weight")) * 0.1) + " kg"
+            if data.get("weight") > 1
+            else str(int(data.get("weight")) * 100) + " g"
+        )
+
+        # On multiplie la taille par 10 pour passer de décimétres à cm
+        self.height = str(int(data.get("height")) * 10) + " cm"
 
         self.sprites = data.get("sprites", {})
 
         self.cries = data.get("cries", {})
 
     def __repr__(self):
+        """Présente le pokemon (pour la console)
+
+        Returns:
+            str: Description du pokemon
+        """
         return (
             f"Pokemon(id={self.id}, name='{self.name}', types={self.types}, "
             f"abilities={self.abilities}, stats={self.stats}, "
