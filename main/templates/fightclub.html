@@ -6,5 +6,31 @@
 {% block content %}
     <div class="fightclub-container">
         <h1>Bienvenue au Fight Club</h1>
+        <h2>Votre Équipe</h2>
+        <div class="team-display" id="team-container">
+            <!-- le JavaScript injectera ici le contenu -->
+        </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupération de l'équipe
+            const selectedTeam = JSON.parse(sessionStorage.getItem('selectedTeam') || '[]');
+            const container = document.querySelector('.team-display');
+
+            if (selectedTeam.length > 0) {
+                container.innerHTML = ''; // On vide d'abord le contenu existant
+                selectedTeam.forEach(pokemon => {
+                    const pokemonElement = document.createElement('div');
+                    pokemonElement.className = 'pokemon-card';
+                    pokemonElement.innerHTML = `
+                        <img src="${pokemon.image}" alt="${pokemon.name}">
+                        <p>${pokemon.name}</p>
+                    `;
+                    container.appendChild(pokemonElement);
+                });
+            } else {
+                container.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
+            }
+        });
+    </script>
 {% endblock %}

@@ -3,6 +3,7 @@ from .pokeapi import get_pokemon_by_id, get_pokemon_by_name, get_all_pokemon, ge
 from .pokemon import Pokemon
 from django.shortcuts import render
 from .pokeapi import get_pokemon_by_id
+from django.http import JsonResponse
 
 # gérer l'affichage de la liste des pokemons sur la page accueil
 def HomeListPokemon(request):
@@ -31,5 +32,11 @@ def DetailPokemon(request, name):
 
 # gérer l'affichage des pokemons de la page de combat
 def FightClubPokemon(request):
-    return render(request, 'fightclub.html')
+    if request.method == 'POST':
+        selected_team = request.POST.getlist('team[]')
+        # Traitement de l'équipe
+        return JsonResponse({'status': 'success', 'team': selected_team})
+    else:
+        # Affichage de la page de combat
+        return render(request, 'fightclub.html')
 

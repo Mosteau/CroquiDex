@@ -25,19 +25,41 @@
         <button class="fight-button" id="fight-button" onclick="Gotofight()" style="display: none;">Combattre</button>
     </div>    
     <script>
-
-    
-    function Gotofight(){
-        if (document.querySelector('.selected-team').innerHTML === '<p>Aucun Pokémon sélectionné</p>'){
-            alert('Veuillez sélectionner au moins un Pokémon pour combattre');
-        } else {
-            window.location.href = "{% url 'fightclub' %}";
-        }
-    }
-
-
         let selectedTeam = [];
         const maxTeamSize = 5;
+
+        function Gotofight() {
+            if (selectedTeam.length === 0) {
+                alert('Veuillez sélectionner au moins un Pokémon pour combattre');
+                return;
+            }
+
+            // Stockage de l'équipe
+            sessionStorage.setItem('selectedTeam', JSON.stringify(selectedTeam));
+
+            const formData = new FormData();
+            selectedTeam.forEach(pokemon => formData.append('team[]', pokemon.id));
+
+            fetch("{% url 'fightclub' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur réseau');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = "{% url 'fightclub' %}";
+                }
+            })
+            .catch(error => {
+                alert('Erreur lors de l\'envoi de l\'équipe');
+            });
+        }
     
         document.querySelectorAll('.pokemon-card').forEach(card => {
             card.addEventListener('click', function() {
@@ -57,27 +79,27 @@
         });
     
         function updateTeamDisplay() {
-        const teamContainer = document.querySelector('.selected-team');
-        const fightButton = document.getElementById('fight-button');
-        teamContainer.innerHTML = '';
-        if (selectedTeam.length === 0) {
-            teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
-            fightButton.style.display = 'none';
-            return;
-        }
+            const teamContainer = document.querySelector('.selected-team');
+            const fightButton = document.getElementById('fight-button');
+            teamContainer.innerHTML = '';
+            if (selectedTeam.length === 0) {
+                teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
+                fightButton.style.display = 'none';
+                return;
+            }
 
-        selectedTeam.forEach(pokemon => {
-            const card = document.createElement('div');
-            card.className = 'pokemon-card team-member';
-            card.innerHTML = `
-                <img src="${pokemon.image}" alt="${pokemon.name}">
-                <p>${pokemon.name}</p>
-                <button onclick="removePokemon('${pokemon.id}')">Retirer</button>
-            `;
-            teamContainer.appendChild(card);
-        });
-        fightButton.style.display = 'block';
-    }
+            selectedTeam.forEach(pokemon => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card team-member';
+                card.innerHTML = `
+                    <img src="${pokemon.image}" alt="${pokemon.name}">
+                    <p>${pokemon.name}</p>
+                    <button onclick="removePokemon('${pokemon.id}')">Retirer</button>
+                `;
+                teamContainer.appendChild(card);
+            });
+            fightButton.style.display = 'block';
+        }
     
         function removePokemon(id) {
             selectedTeam = selectedTeam.filter(pokemon => pokemon.id !== id);
