@@ -4,7 +4,77 @@
 {% block title %}Fight Club - CroquiDex{% endblock %}
 
 {% block content %}
-    <div class="fightclub-container">
-        <h1>Bienvenue au Fight Club</h1>
+<div class="fightclub-container">
+    <h1>Fight Club</h1>
+
+    <!-- Équipe du Bot -->
+    <div class="bot-team-section">
+        <h2>Équipe adversaire</h2>
+        <div class="pokemon-list bot-team">
+            <!-- Le JavaScript injectera ici l'équipe du bot -->
+        </div>
     </div>
+
+    <!-- Bouton Combat -->
+    <div class="battle-section">
+        <button id="start-battle" class="battle-button">COMBATTRE !</button>
+    </div>
+
+    <!-- Équipe du Joueur -->
+    <div class="player-team-section">
+        <h2>Votre équipe</h2>
+        <div class="pokemon-list player-team">
+            <!-- Le JavaScript injectera ici l'équipe du joueur -->
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedTeam = JSON.parse(sessionStorage.getItem('selectedTeam') || '[]');
+    const playerTeamContainer = document.querySelector('.player-team');
+    const botTeamContainer = document.querySelector('.bot-team');
+
+    // Afficher l'équipe du joueur
+    selectedTeam.forEach(pokemon => {
+        const pokemonCard = document.createElement('div');
+        pokemonCard.className = 'pokemon-card';
+        pokemonCard.innerHTML = `
+            <img src="${pokemon.image}" alt="${pokemon.name}">
+            <h3>${pokemon.name}</h3>
+        `;
+        playerTeamContainer.appendChild(pokemonCard);
+    });
+
+    // Récupérer et afficher l'équipe du bot
+    fetch("{% url 'fightclub' %}", {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.bot_team) {
+            // Stocker l'équipe du bot dans sessionStorage
+            sessionStorage.setItem('botTeam', JSON.stringify(data.bot_team));
+
+            // Afficher l'équipe du bot
+            data.bot_team.forEach(pokemon => {
+                const pokemonCard = document.createElement('div');
+                pokemonCard.className = 'pokemon-card';
+                pokemonCard.innerHTML = `
+                    <img src="${pokemon.image}" alt="${pokemon.name}">
+                    <h3>${pokemon.name}</h3>
+                `;
+                botTeamContainer.appendChild(pokemonCard);
+            });
+        }
+    });
+
+    // Gérer le clic sur le bouton combat
+    document.getElementById('start-battle').addEventListener('click', function() {
+        window.location.href = "{% url 'battle_result' %}";
+    });
+});
+</script>
 {% endblock %}
