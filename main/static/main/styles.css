@@ -341,9 +341,50 @@ position: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.pokemon-card-home {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .pokemon-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* effet clignotant sur la carte selectionnée */
+:root {
+    --neon-border-color: rgb(252, 132, 132);
+}
+
+@keyframes neon {
+    0%, 100% {
+        box-shadow: 0 0 0.1rem #029ef8, inset 0 0 0.5rem #029ef8,
+        0 0 0.5rem var(--neon-border-color), inset 0 0 0.5rem var(--neon-border-color),
+        0 0 4rem var(--neon-border-color), inset 0 0 4rem var(--neon-border-color);
+    }
+    50% {
+        box-shadow: none;
+    }
+}
+
+.pokemon-card-home:hover {
+    transform: scale(1.5);
+    z-index: 99;
+    background: rgba(213, 98, 98, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgb(255, 3, 3);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border: 2px solid rgba(0, 26, 255, 0.527);
+    animation: neon 1.5s infinite alternate;
 }
 
 .pokemon-card img {
