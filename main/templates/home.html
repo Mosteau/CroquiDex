@@ -6,17 +6,15 @@
 {% block content %}
     <div class="home-container">
         <h1>Bienvenue sur CroquiDex</h1>
-        <div class="pokemon-info">
-            <ul>
-            {% for pokemon in all %}
-                <li>
-                    <img src="{{ pokemon.1 }}" alt="{{ pokemon.0. }}">
-                    <a href="{% url 'detail' pokemon.0 %}">
-                        {{ pokemon.0 }}
+        <div class="pokemon-container">
+            <div class="pokemon-list">
+                {% for pokemon in all %}
+                    <a href="{% url 'detail' pokemon.0 %}" class="pokemon-card-home" style="text-decoration: none; color: inherit;">
+                        <img src="{{ pokemon.1 }}" alt="{{ pokemon.0 }}">
+                        <p>{{ pokemon.0 }}</p>
                     </a>
-                </li>
-            {% endfor %}
-            </ul>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
