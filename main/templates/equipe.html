@@ -34,16 +34,13 @@
                 return;
             }
 
-            // Stockage de l'équipe
+            // Stockage de l'équipe du joueur
             sessionStorage.setItem('selectedTeam', JSON.stringify(selectedTeam));
 
-            const formData = new FormData();
-            selectedTeam.forEach(pokemon => formData.append('team[]', pokemon.id));
-
+            // Créer une requête AJAX pour obtenir l'équipe du bot
             fetch("{% url 'fightclub' %}", {
-                method: 'POST',
-                body: formData,
                 headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRFToken': '{{ csrf_token }}'
                 }
             })
@@ -53,11 +50,15 @@
             })
             .then(data => {
                 if (data.status === 'success') {
+                    // Stocker l'équipe du bot
+                    sessionStorage.setItem('botTeam', JSON.stringify(data.bot_team));
+                    // Rediriger vers la page de combat
                     window.location.href = "{% url 'fightclub' %}";
                 }
             })
             .catch(error => {
-                alert('Erreur lors de l\'envoi de l\'équipe');
+                console.error('Erreur:', error);
+                alert('Erreur lors de la création du combat');
             });
         }
     

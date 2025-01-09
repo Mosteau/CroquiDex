@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Résultats du Combat{% endblock %}
+
+{% block content %}
+<div class="battle-results-container">
+    <h1>Résultats du Combat</h1>
+    <div class="score-display">
+        <h2>Score Final : <span id="score">-</span></h2>
+    </div>
+    <div class="duels-container" id="duelsContainer">
+        <!-- Les duels seront affichés ici -->
+    </div>
+    <div class="battle-actions">
+        <a href="{% url 'fightclub' %}" class="back-button">Retour au Fight Club</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedTeam = JSON.parse(sessionStorage.getItem('selectedTeam') || '[]');
+    const botTeam = JSON.parse(sessionStorage.getItem('botTeam') || '[]');
+    const duelsContainer = document.getElementById('duelsContainer');
+
+    // Envoyer les deux équipes au serveur
+    fetch("{% url 'battle_result' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            player_team: selectedTeam,
+            bot_team: botTeam
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Erreur réseau');
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            // Afficher le score final
+            document.getElementById('score').textContent =
+                `${data.final_score.player} - ${data.final_score.bot}`;
+
+            // Afficher chaque duel
+            data.duels.forEach((duel, index) => {
+                const duelElement = document.createElement('div');
+                duelElement.className = 'duel-card';
+                duelElement.innerHTML = `
+                    <h3>Duel ${index + 1}</h3>
+                    <div class="duel-pokemon">
+                        <div class="player-pokemon ${duel.winner === 'player' ? 'winner' : ''}">
+                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${duel.player_pokemon.id}.png" alt="${duel.player_pokemon.name}">
+                            <h4>${duel.player_pokemon.name}</h4>
+                            <p>HP: ${duel.player_pokemon.stats.hp}</p>
+                            <p>Attaque: ${duel.player_pokemon.stats.attack}</p>
+                            <p>Poids: ${duel.player_pokemon.stats.weight}</p>
+                            <p>Taille: ${duel.player_pokemon.stats.height}</p>
+                            <p>Score total: ${duel.player_pokemon.total_score}</p>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="bot-pokemon ${duel.winner === 'bot' ? 'winner' : ''}">
+                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${duel.bot_pokemon.id}.png" alt="${duel.bot_pokemon.name}">
+                            <h4>${duel.bot_pokemon.name}</h4>
+                            <p>HP: ${duel.bot_pokemon.stats.hp}</p>
+                            <p>Attaque: ${duel.bot_pokemon.stats.attack}</p>
+                            <p>Poids: ${duel.bot_pokemon.stats.weight}</p>
+                            <p>Taille: ${duel.bot_pokemon.stats.height}</p>
+                            <p>Score total: ${duel.bot_pokemon.total_score}</p>
+                        </div>
+                    </div>
+                `;
+                duelsContainer.appendChild(duelElement);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        duelsContainer.innerHTML = '<p>Erreur lors du chargement des résultats</p>';
+    });
+});
+</script>
+{% endblock %}
