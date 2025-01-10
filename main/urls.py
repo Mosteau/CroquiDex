@@ -26,4 +26,5 @@ urlpatterns = [
     path('fightclub/', views.FightClubPokemon, name='fightclub'),
     path('aiduel/', views.AIDuel, name='AIDuel'),
     path('api/', views.ChatAPi, name='API'),
+    path('battle/result/', views.battle_result, name='battle_result'),
 ]

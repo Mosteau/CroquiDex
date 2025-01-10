@@ -96,7 +96,6 @@ def get_all_pokemon():
     else:
         return None
 
-
 def get_all_pokemon_for_teams():
     """
     Récupère tous les Pokémon pour la page de gestion de l'équipe.
