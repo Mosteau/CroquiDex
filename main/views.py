@@ -3,6 +3,7 @@ from .pokeapi import get_pokemon_by_id, get_pokemon_by_name, get_all_pokemon, ge
 from .pokemon import Pokemon
 from django.shortcuts import render
 from django.http import JsonResponse
+from .battle_system import BattleSystem
 import random
 import json
 
@@ -37,7 +38,6 @@ def FightClubPokemon(request):
         # Pour les requêtes AJAX, générer et renvoyer l'équipe du bot
         bot_team_ids = random.sample(range(1, 152), 5)
         bot_team = [Pokemon(get_pokemon_by_id(id)) for id in bot_team_ids]
-        print(request)
 
         # Convertir l'équipe bot en format JSON
         bot_team_data = [{
@@ -56,98 +56,53 @@ def FightClubPokemon(request):
 
 def battle_result(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            player_team_ids = [pokemon['id'] for pokemon in data['player_team']]
-            bot_team_ids = [pokemon['id'] for pokemon in data['bot_team']]
+        data = json.loads(request.body)
+        player_team_ids = [pokemon['id'] for pokemon in data['player_team']]
+        bot_team_ids = [pokemon['id'] for pokemon in data['bot_team']]
 
-            # Récupérer les détails des Pokémon
-            player_team = [Pokemon(get_pokemon_by_id(int(id))) for id in player_team_ids]
-            bot_team = [Pokemon(get_pokemon_by_id(int(id))) for id in bot_team_ids]
+        # Récupérer les Pokémon
+        player_team = [Pokemon(get_pokemon_by_id(int(id))) for id in player_team_ids]
+        bot_team = [Pokemon(get_pokemon_by_id(int(id))) for id in bot_team_ids]
 
-            results = []
-            score_player = 0
-            score_bot = 0
+        # Simuler les combats
+        results = []
+        score_player = 0
+        score_bot = 0
 
-            for p_pokemon, b_pokemon in zip(player_team, bot_team):
-                # Calculer les scores pour chaque stat
-                player_score = (
-                        p_pokemon.stats['hp'] +
-                        p_pokemon.stats['attack'] +
-                        p_pokemon.stats['defense'] +
-                        p_pokemon.base_experience +
-                        int(float(p_pokemon.weight.split()[0])) +  # Convertir "100.0 kg" en nombre
-                        int(float(p_pokemon.height.split()[0]))  # Convertir "200 cm" en nombre
-                )
+        for p_pokemon, b_pokemon in zip(player_team, bot_team):
+            battle_result = BattleSystem.simulate_battle(p_pokemon, b_pokemon)
 
-                bot_score = (
-                        b_pokemon.stats['hp'] +
-                        b_pokemon.stats['attack'] +
-                        b_pokemon.stats['defense'] +
-                        b_pokemon.base_experience +
-                        int(float(b_pokemon.weight.split()[0])) +
-                        int(float(b_pokemon.height.split()[0]))
-                )
+            winner = battle_result['winner']
+            if winner == p_pokemon:
+                score_player += 1
+            else:
+                score_bot += 1
 
-                # Déterminer le vainqueur
-                winner = 'player' if player_score > bot_score else 'bot'
-                if winner == 'player':
-                    score_player += 1
-                else:
-                    score_bot += 1
-
-                # Stocker les détails du duel
-                duel = {
-                    'player_pokemon': {
-                        'id': p_pokemon.id,
-                        'name': p_pokemon.name,
-                        'types': p_pokemon.types,
-                        'abilities': p_pokemon.abilities,
-                        'stats': {
-                            'hp': p_pokemon.stats['hp'],
-                            'attack': p_pokemon.stats['attack'],
-                            'defense': p_pokemon.stats['defense'],
-                            'special-attack': p_pokemon.stats['special-attack'],
-                            'special-defense': p_pokemon.stats['special-defense'],
-                            'speed': p_pokemon.stats['speed'],
-                            'experience': p_pokemon.base_experience,
-                            'weight': p_pokemon.weight,
-                            'height': p_pokemon.height
-                        },
-                        'total_score': player_score
-                    },
-                    'bot_pokemon': {
-                        'id': b_pokemon.id,
-                        'name': b_pokemon.name,
-                        'types': b_pokemon.types,
-                        'abilities': b_pokemon.abilities,
-                        'stats': {
-                            'hp': b_pokemon.stats['hp'],
-                            'attack': b_pokemon.stats['attack'],
-                            'defense': b_pokemon.stats['defense'],
-                            'special-attack': b_pokemon.stats['special-attack'],
-                            'special-defense': b_pokemon.stats['special-defense'],
-                            'speed': b_pokemon.stats['speed'],
-                            'experience': b_pokemon.base_experience,
-                            'weight': b_pokemon.weight,
-                            'height': b_pokemon.height
-                        },
-                        'total_score': bot_score
-                    },
-                    'winner': winner
-                }
-                results.append(duel)
-
-            return JsonResponse({
-                'status': 'success',
-                'duels': results,
-                'final_score': {
-                    'player': score_player,
-                    'bot': score_bot
+            results.append({
+                'player_pokemon': {
+                    'id': p_pokemon.id,
+                    'name': p_pokemon.name,
+                    'types': p_pokemon.types,
+                    'stats': p_pokemon.stats,
+                    'image': f'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{p_pokemon.id}.png'
                 },
-                'winner': 'player' if score_player > score_bot else 'bot'
+                'bot_pokemon': {
+                    'id': b_pokemon.id,
+                    'name': b_pokemon.name,
+                    'types': b_pokemon.types,
+                    'stats': b_pokemon.stats,
+                    'image': f'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{b_pokemon.id}.png'
+                },
+                'winner': 'player' if winner == p_pokemon else 'bot',
+                'rounds': battle_result['rounds'],
+                'type_effectiveness': battle_result['type_effectiveness']
             })
-        except json.JSONDecodeError:
-            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+
+        return JsonResponse({
+            'status': 'success',
+            'duels': results,
+            'final_score': {'player': score_player, 'bot': score_bot},
+            'winner': 'player' if score_player > score_bot else 'bot'
+        })
 
     return render(request, 'battle_result.html')

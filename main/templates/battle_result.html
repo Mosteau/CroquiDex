@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const botTeam = JSON.parse(sessionStorage.getItem('botTeam') || '[]');
     const duelsContainer = document.getElementById('duelsContainer');
 
-    // Envoyer les deux équipes au serveur
     fetch("{% url 'battle_result' %}", {
         method: 'POST',
         headers: {
@@ -41,11 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
         if (data.status === 'success') {
-            // Afficher le score final
             document.getElementById('score').textContent =
                 `${data.final_score.player} - ${data.final_score.bot}`;
 
-            // Afficher chaque duel
             data.duels.forEach((duel, index) => {
                 const duelElement = document.createElement('div');
                 duelElement.className = 'duel-card';
@@ -53,23 +50,53 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>Duel ${index + 1}</h3>
                     <div class="duel-pokemon">
                         <div class="player-pokemon ${duel.winner === 'player' ? 'winner' : ''}">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${duel.player_pokemon.id}.png" alt="${duel.player_pokemon.name}">
+                            <img src="${duel.player_pokemon.image}" alt="${duel.player_pokemon.name}">
                             <h4>${duel.player_pokemon.name}</h4>
-                            <p>HP: ${duel.player_pokemon.stats.hp}</p>
-                            <p>Attaque: ${duel.player_pokemon.stats.attack}</p>
-                            <p>Poids: ${duel.player_pokemon.stats.weight}</p>
-                            <p>Taille: ${duel.player_pokemon.stats.height}</p>
-                            <p>Score total: ${duel.player_pokemon.total_score}</p>
+                            <div class="pokemon-types">
+                                <ul class="type">
+                                    ${duel.player_pokemon.types.map(type =>
+                                        `<li class="${type.toLowerCase()}">${type.charAt(0).toUpperCase() + type.slice(1)}</li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                            <div class="stats-container">
+                                <h5>Stats</h5>
+                                <div class="battle-stats">
+                                    <p>PV restants: ${duel.rounds[duel.rounds.length-1].hp1}/${duel.player_pokemon.stats.hp}</p>
+                                    <p>Attaque: ${duel.player_pokemon.stats.attack}</p>
+                                    <p>Défense: ${duel.player_pokemon.stats.defense}</p>
+                                    <p>Vitesse: ${duel.player_pokemon.stats.speed}</p>
+                                </div>
+                                ${duel.winner === 'player' ?
+                                    `<div class="battle-result win">VICTOIRE!</div>` :
+                                    `<div class="battle-result lose">DÉFAITE</div>`
+                                }
+                            </div>
                         </div>
                         <div class="vs">VS</div>
                         <div class="bot-pokemon ${duel.winner === 'bot' ? 'winner' : ''}">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${duel.bot_pokemon.id}.png" alt="${duel.bot_pokemon.name}">
+                            <img src="${duel.bot_pokemon.image}" alt="${duel.bot_pokemon.name}">
                             <h4>${duel.bot_pokemon.name}</h4>
-                            <p>HP: ${duel.bot_pokemon.stats.hp}</p>
-                            <p>Attaque: ${duel.bot_pokemon.stats.attack}</p>
-                            <p>Poids: ${duel.bot_pokemon.stats.weight}</p>
-                            <p>Taille: ${duel.bot_pokemon.stats.height}</p>
-                            <p>Score total: ${duel.bot_pokemon.total_score}</p>
+                            <div class="pokemon-types">
+                                <ul class="type">
+                                    ${duel.bot_pokemon.types.map(type =>
+                                        `<li class="${type.toLowerCase()}">${type.charAt(0).toUpperCase() + type.slice(1)}</li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                            <div class="stats-container">
+                                <h5>Stats</h5>
+                                <div class="battle-stats">
+                                    <p>PV restants: ${duel.rounds[duel.rounds.length-1].hp2}/${duel.bot_pokemon.stats.hp}</p>
+                                    <p>Attaque: ${duel.bot_pokemon.stats.attack}</p>
+                                    <p>Défense: ${duel.bot_pokemon.stats.defense}</p>
+                                    <p>Vitesse: ${duel.bot_pokemon.stats.speed}</p>
+                                </div>
+                                ${duel.winner === 'bot' ?
+                                    `<div class="battle-result win">VICTOIRE!</div>` :
+                                    `<div class="battle-result lose">DÉFAITE</div>`
+                                }
+                            </div>
                         </div>
                     </div>
                 `;
