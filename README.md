@@ -22,4 +22,24 @@ Ce projet de cours a pour but d'explorer le framework Django à travers le déve
 - **David Chardon** - B3 DEV IA, option Data Science
 - **Thibaut Mosteau** - B3 DEV IA, FullStack
 
+## Docker
 
+Créer l'image Docker "croquidex" :
+```bash
+docker build -t croquidex .
+```
+
+Vérifier que `croquiDex` fait bien partie des images Docker disponibles :
+```bash
+docker images
+```
+
+Exécuter un conteneur à partir de l'image `croquidex` et le lier au port 8000 :
+```bash
+docker run --name CroquiDex -p 8000:8000 croquidex
+```
+
+Supprimer le conteneur "CroquiDex" si besoin de le recréer par exemple:
+```bash
+docker container rm CroquiDex
+```
