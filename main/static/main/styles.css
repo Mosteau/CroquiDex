@@ -584,6 +584,109 @@ h1, h2 {
     border-radius: 8px;
 }
 
+/* aiduel */
+
+.pokemon-arena {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+
+    & h1 {
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.pokemon-team {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pokemon-card-ai-duel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 130px;
+    margin: calc(3vw/2);
+    flex: 1;
+    font-weight: bold;
+
+    & img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
+}
+
+.fight {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    
+    & img {
+        width: 50px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+    }
+}
+
+#fight-button {
+    animation: pulse 5s infinite;
+
+    &:hover {
+        animation: pulse 1s infinite;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0,0,0,0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(0,0,0,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0,0,0,0);
+    }
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+dialog {
+    background: white;
+    border: transparent;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: fit-content;
+    margin: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+label+p {
+    color: #999;
+    font-size: 0.8rem;
+
 .winner {
     background-color: #e8f5e9;
     border: 2px solid #4caf50;

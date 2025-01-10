@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<dialog id="settingsDialog">
+    <form method="dialog" class="settings-form">
+        <h1>Settings</h1>
+        <label for="ai-api-url">API URL:</label>
+        <p>E.g. https://api.openai.com/v1/ or http://localhost:11434/v1</p>
+        <input type="text" id="ai-api-url" value="https://api.openai.com/v1/">
+        <label for="ai-api-key">API Key:</label>
+        <p>sk-...</p>
+        <input type="text" id="ai-api-key">
+        <label for="ai-model">Model:</label>
+        <p>E.g. gpt-4o-mini or qwen2.5:32b</p>
+        <input type="text" id="ai-model" value="gpt-4o-mini">
+        <button id="saveSettings">Close</button>
+    </form>
+</dialog>
+
+<dialog id="battleDialog">
+    <form method="dialog" class="settings-form">
+        <p class="battle"></p>
+        <button id="saveSettings">Close</button>
+    </form>
+</dialog>
+
+<div class="pokemon-arena">
+    <h1>The AI's team !</h1>
+    <div class="pokemon-team">
+        {% for pokemon in ai_team %}
+        <div class="pokemon-card-ai-duel">
+                <img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon.name }}">
+                <p>{{ pokemon.name|capfirst }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="fight">
+        <img src="{% static 'main/settings-cog.svg' %}" alt="settings" onclick="document.getElementById('settingsDialog').showModal();">
+        <img id="fight-button" src="{% static 'main/fight-swords.svg' %}" alt="fight swords">
+        <img src="{% static 'main/paper.svg' %}" alt="result text" onclick="document.getElementById('battleDialog').showModal();">
+    </div>
+    <div class="pokemon-team">
+        {% for pokemon in user_team %}
+        <div class="pokemon-card-ai-duel">
+            <img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon.name }}">
+            <p>{{ pokemon.name|capfirst }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <h1>Your team !</h1>
+</div>
+
+    <script>
+        document.getElementById('fight-button').addEventListener('click', function() {
+        if (document.getElementById('ai-api-url').value == '' || document.getElementById('ai-api-key').value == '' || document.getElementById('ai-model').value == '') {
+            alert('Please fill all the fields (API URL, API Key, Model)');
+            document.getElementById('settingsDialog').showModal();
+        } else if (document.querySelector('.battle').innerText ==! '') {
+            console.log(document.querySelector('.battle'));
+            document.getElementById('battleDialog').showModal();
+        } else {
+            document.querySelector('.battle').innerHTML = "<img src='https://media1.tenor.com/m/T9EgnoWuX2QAAAAd/pokemon-ash.gif' alt='fighting' class='pokemon-img'>";
+            document.getElementById('battleDialog').showModal();
+
+            fetch('/api/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    systemPrompt: `{{ system_prompt|safe }}`,
+                    userPrompt: `{{ user_prompt|safe }}`,
+                    baseUrl: document.getElementById('ai-api-url').value,
+                    apiKey: document.getElementById('ai-api-key').value,
+                    model: document.getElementById('ai-model').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.battle').innerHTML = data["message"] ? data["message"] : data["error"];
+            })
+            .catch(error => console.error('Error:', error));}
+        });
+    </script>
+{% comment %} 
+<script>
+    console.log(`{{ system_prompt|safe }}`);
+    console.log(`{{ user_prompt|safe }}`);
+</script>
+{% endcomment %}
+{% endblock %}
