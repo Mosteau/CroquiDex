@@ -318,25 +318,20 @@ position: center;
 }
 
 .pokemon-container {
-    display: block;
-    overflow-y: auto;
-    height: 100%;
-    width: 100%; /* Optionnel, ajuste selon ton design */
+    flex: 1;
+    margin-right: 270px;
+    width: calc(100% - 270px);
 }
 
-
 .pokemon-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 15px;
     padding: 10px;
-    height: 80vh; /* Limite la hauteur */
-    overflow-y: auto; /* Active le scroll vertical */
 }
 
 .pokemon-card {
     background: #fff;
-    width: 50%;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
@@ -348,7 +343,6 @@ position: center;
 
 .pokemon-card-home {
     background: #ffffff;
-    width: 20%;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
