@@ -22,7 +22,8 @@
     <div class="team-section">
         <h2>Mon Équipe (5 Pokémon max)</h2>
         <div class="selected-team"></div>
-        <button class="fight-button" id="fight-button" onclick="Gotofight()" style="display: none;">Combattre</button>
+        <button class="fight-button" id="fight-button" onclick="Gotofight()" style="display: none;">Combattre l'Algo</button>
+        <button class="fight-button" id="ai-fight-button" onclick="GotoAIDuel()" style="display: none;">Combattre l'IA</button>
     </div>    
     <script>
         let selectedTeam = [];
@@ -61,6 +62,17 @@
                 alert('Erreur lors de la création du combat');
             });
         }
+
+        function GotoAIDuel() {
+            if (selectedTeam.length === 0) {
+                alert('Veuillez sélectionner au moins un Pokémon pour combattre');
+                return;
+            }
+
+            // Stockage de l'équipe du joueur
+            sessionStorage.setItem('selectedTeam', JSON.stringify(selectedTeam));
+            window.location.href = "{% url 'AIDuel' %}";
+        }
     
         document.querySelectorAll('.pokemon-card').forEach(card => {
             card.addEventListener('click', function() {
@@ -82,10 +94,12 @@
         function updateTeamDisplay() {
             const teamContainer = document.querySelector('.selected-team');
             const fightButton = document.getElementById('fight-button');
+            const aifightButton = document.getElementById('ai-fight-button');
             teamContainer.innerHTML = '';
             if (selectedTeam.length === 0) {
                 teamContainer.innerHTML = '<p>Aucun Pokémon sélectionné</p>';
                 fightButton.style.display = 'none';
+                aifightButton.style.display = 'none';
                 return;
             }
 
@@ -100,6 +114,7 @@
                 teamContainer.appendChild(card);
             });
             fightButton.style.display = 'block';
+            aifightButton.style.display = 'block';
         }
     
         function removePokemon(id) {
