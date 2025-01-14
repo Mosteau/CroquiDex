@@ -22,7 +22,7 @@ Ce projet de cours a pour but d'explorer le framework Django à travers le déve
 - **David Chardon** - B3 DEV IA, option Data Science
 - **Thibaut Mosteau** - B3 DEV IA, FullStack
 
-## Docker
+## Installtation avec docker Docker
 
 Créer l'image Docker "croquidex" :
 ```bash
@@ -42,4 +42,23 @@ docker run --name CroquiDex -p 8000:8000 croquidex
 Supprimer le conteneur "CroquiDex" si besoin de le recréer par exemple:
 ```bash
 docker container rm CroquiDex
+```
+
+
+## Installation sans docker 
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+mkdir -p /Users/thibaut/Desktop/CroquiDex/static
+```
+
+```bash
+pip install openai
+```
+
+```bash
+python3 manage.py runserver
 ```
