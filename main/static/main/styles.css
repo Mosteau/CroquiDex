@@ -145,13 +145,13 @@ footer {
     color: #555;
 }
 
-.details ul {
+.details ul, .pokemon-types ul {
     list-style: none;
     padding: 0;
     margin: 10px 0;
 }
 
-.details li {
+.details li, .pokemon-types li {
     background: #f1f3f5;
     padding: 10px;
     margin-bottom: 10px;
@@ -720,11 +720,18 @@ label+p {
     border-radius: 5px;
 }
 
-.pokemon-types {
+.pokemon-types > ul {
     display: flex;
     gap: 5px;
     justify-content: center;
     margin: 10px 0;
+    flex: 1;
+    padding: 10px;
+
+}
+
+.pokemon-types ul li {
+    flex: 1;
 }
 
 .stats-container {
