@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .battle_system import BattleSystem
 import random
+from .ai import userPrompt, systemPrompt
 
 # gérer l'affichage de la liste des pokemons sur la page accueil
 def HomeListPokemon(request):
@@ -149,33 +150,9 @@ def battle_result(request):
     return render(request, 'battle_result.html')
   
 def AIDuel(request):
-    # userTeam = [get_pokemon_by_id(i) for i in request.session['userTeam']]
-    user_team = [Pokemon(get_pokemon_by_id(i)) for i in [14, 27, 30, 7, 10]]
-    ai_team = [Pokemon(get_pokemon_by_id(randint(1, 151))) for _ in range(5)]
-
-    user_team_presentation = ''
-    for pokemon in user_team:
-        user_team_presentation += pokemon.presentation() + '\n\n'
-
-    ai_team_presentation = ''
-    for pokemon in ai_team:
-        ai_team_presentation += pokemon.presentation() + '\n\n'
-
-    system_prompt = """You're the **best** Pokemon battle teller of the world and you have to write a **cool battle** between the user's team and the AI's team. You will be presented their pokemon with their stats and you will be asked to **write a description of the battle**.
-
-    The battle must be **epic** with **lots of details and plot twists**. The battle must be **realistic** (take in account the stats of the pokemon and their types).
-
-    At the end, when one of the teams wins, you will tell the user that they won.
-
-    You may use **text** or *text* for abilities, moves, types, Titles to make it easier to read for the user
-    """
-
-    user_prompt = f"""# Here is the **user's team**:
-    {user_team_presentation}
-    # Here is the **AI's team**:
-    {ai_team_presentation}"""
-    
-    return render(request, 'aiduel.html', {'system_prompt': system_prompt, 'user_prompt': user_prompt, 'user_team': user_team, 'ai_team': ai_team})
+    ai_team_ids = random.sample(range(1, 152), 5)
+    ai_team = [Pokemon(get_pokemon_by_id(id)) for id in ai_team_ids]
+    return render(request, 'aiduel.html', {'ai_team': ai_team, 'ai_team_ids': ai_team_ids})
 
 @csrf_exempt
 def ChatAPi(request):
@@ -191,9 +168,13 @@ def ChatAPi(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body.decode("utf-8"))
+            userTeamIds = data.get("userTeamIds")
+            aiTeamIds = data.get("aiTeamIds")
             model = data.get("model")
             base_url = data.get("baseUrl")
             api_key = data.get("apiKey")
+
+            #TODO FUNCTIONS POUR LES PROMPTS
             system_prompt = data.get("systemPrompt")
             user_prompt = data.get("userPrompt")
             

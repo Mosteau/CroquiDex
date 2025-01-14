@@ -40,18 +40,29 @@
         <img id="fight-button" src="{% static 'main/fight-swords.svg' %}" alt="fight swords">
         <img src="{% static 'main/paper.svg' %}" alt="result text" onclick="document.getElementById('battleDialog').showModal();">
     </div>
-    <div class="pokemon-team">
-        {% for pokemon in user_team %}
-        <div class="pokemon-card-ai-duel">
-            <img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon.name }}">
-            <p>{{ pokemon.name|capfirst }}</p>
-        </div>
-        {% endfor %}
+    <div class="pokemon-team" id="user_team">
     </div>
     <h1>Your team !</h1>
 </div>
 
     <script>
+        const selectedTeam = JSON.parse(sessionStorage.getItem('selectedTeam') || '[]');
+        console.log("cool !", selectedTeam);
+        
+        // Afficher l'équipe du joueur
+        selectedTeam.forEach(pokemon => {
+            console.log(pokemon);
+            
+            const userPokemons = document.getElementById('user_team');
+            const pokemonCard = document.createElement('div');
+            pokemonCard.className = 'pokemon-card-ai-duel';
+            pokemonCard.innerHTML = `
+                <img src="${pokemon.image}" alt="${pokemon.name}">
+                <p>${pokemon.name}</p>
+            `;
+            userPokemons.appendChild(pokemonCard);
+        });
+
         document.getElementById('fight-button').addEventListener('click', function() {
         if (document.getElementById('ai-api-url').value == '' || document.getElementById('ai-api-key').value == '' || document.getElementById('ai-model').value == '') {
             alert('Please fill all the fields (API URL, API Key, Model)');
@@ -69,8 +80,8 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    systemPrompt: `{{ system_prompt|safe }}`,
-                    userPrompt: `{{ user_prompt|safe }}`,
+                    userTeamIds: JSON.parse(sessionStorage.getItem('selectedTeam') || '[]'),
+                    aiTeamIds: {{ ai_team_ids|safe }},
                     baseUrl: document.getElementById('ai-api-url').value,
                     apiKey: document.getElementById('ai-api-key').value,
                     model: document.getElementById('ai-model').value
