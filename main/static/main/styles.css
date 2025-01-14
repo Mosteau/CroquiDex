@@ -16,9 +16,10 @@ body {
 main {
     width: 100%;
     flex: 1;
+    padding-top: 100px;
 }
 
-header, footer {
+footer {
     padding: 10px;
     margin: 10px;
     background-color: #fff;
@@ -28,10 +29,23 @@ header, footer {
 
 header {
     display: flex;
+    position: fixed;
+    z-index: 99;
     align-items: center;
     justify-content: space-between;
     padding-inline: 15px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.431);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: 0;
+    margin-right: 10px;
+    margin-left: 10px;
 }
+
 
 nav ul {
     padding: 20px;
@@ -359,8 +373,8 @@ position: center;
 }
 
 .pokemon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px 2px rgba(255, 0, 0, 0.2);
 }
 
 /* effet clignotant sur la carte selectionnée */
@@ -380,17 +394,8 @@ position: center;
 }
 
 .pokemon-card-home:hover {
-    transform: scale(1.5);
-    z-index: 99;
-    background: rgba(213, 98, 98, 0.2);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 2px solid rgb(255, 3, 3);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    border: 2px solid rgba(0, 26, 255, 0.527);
-    animation: neon 1.5s infinite alternate;
+    transform: scale(1.1);
+    box-shadow: 4px 4px 10px 2px rgba(255, 0, 0, 0.2);
 }
 
 .pokemon-card img {
@@ -525,8 +530,9 @@ h1, h2 {
 .pokemon-list {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
 }
 
 .pokemon-card {
